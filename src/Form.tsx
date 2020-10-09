@@ -7,6 +7,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import LowPriorityIcon from '@material-ui/icons/LowPriority';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import { saveOnLocal } from './StorageManagement';
 import { Data, IPriority } from './CustomTypes';
 
 function uniqueId() {
@@ -30,12 +31,12 @@ const priority: IPriority = {
 }
 
 export const rows: Data[] = [
-    createData('Learn to play basse', priority.high, false),
-    createData('Learn Polish language', priority.low, false),
-    createData('Buy food', priority.medium, false),
-    createData('Clean the room', priority.low, false),
-    createData('Finish diploma thesis', priority.high, false),
-    createData('Go to a pizza with firends', priority.medium, true),
+    // createData('Learn to play basse', priority.high, false),
+    // createData('Learn Polish language', priority.low, false),
+    // createData('Buy food', priority.medium, false),
+    // createData('Clean the room', priority.low, false),
+    // createData('Finish diploma thesis', priority.high, false),
+    // createData('Go to a pizza with firends', priority.medium, true),
 ];
 
 const useStyles: (props?: any) => Record<"root", string> = makeStyles((theme: Theme) =>
@@ -105,6 +106,9 @@ export default function Form({ showForm, setShowForm }: IForm) {
 
         let newTodo: Data = createData(name, taskPriority, checked);
         rows.push(newTodo);
+
+        // Save on local
+        saveOnLocal(rows);
 
         // Redirect to the Tasks table
         setShowForm(!showForm);

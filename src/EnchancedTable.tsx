@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,8 +18,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { Data } from './CustomTypes';
+import { Data, EnhancedTableToolbarProps } from './CustomTypes';
 import { rows } from './Form';
+import { saveOnLocal, getDataFromLocal } from './StorageManagement';
 import "./EnchancedTable.css";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -132,10 +133,6 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface EnhancedTableToolbarProps {
-    numSelected: number;
-}
-
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     const classes = useToolbarStyles();
     const { numSelected } = props;
@@ -187,6 +184,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
+
 export default function EnhancedTable() {
     const classes = useStyles();
     const [order, setOrder] = useState<Order>('asc');
@@ -194,11 +192,17 @@ export default function EnhancedTable() {
     const [selected, setSelected] = useState<string[]>([]);
 
     const [update, setUpdate] = useState<boolean>(false);
-    const [dataRows, setData] = useState<Data[]>(rows);
+    const [dataRows, setData] = useState<Data[]>([]); //rows
     const [page, setPage] = useState<number>(0);
     const [dense, setDense] = useState<boolean>(false);
     const [rowsPerPage, setRowsPerPage] = useState<number>(5);
     const [showDelete, setShowDelete] = useState<string>('');
+
+    useEffect(() => {
+        let todos = getDataFromLocal();
+        console.log('todos', todos, todos.length, typeof (todos));
+        setData(todos);
+    }, [])
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -263,11 +267,11 @@ export default function EnhancedTable() {
             );
         }
 
-        setData(newDataRows)
+        saveOnLocal(newDataRows);
+        setData(newDataRows);
     }
 
     const onMouseEnter = (id: string): void => setShowDelete(id);
-
     const onMouseLeave = (): void => setShowDelete('');
 
     return (

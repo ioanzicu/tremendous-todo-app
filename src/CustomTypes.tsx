@@ -10,3 +10,7 @@ export interface IPriority {
     medium: string,
     low: string
 };
+
+export interface EnhancedTableToolbarProps {
+    numSelected: number;
+}

@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 function App() {
   const [showForm, setShowForm] = useState<Boolean>(false);
 
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setShowForm(!showForm);
   }
