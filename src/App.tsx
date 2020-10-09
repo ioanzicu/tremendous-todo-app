@@ -1,24 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import EnhancedTable from './EnchancedTable';
+
+// let todos = [
+//   { "title": "todos 1", "priority": "high", "done": false },
+//   { "title": "todos 2", "priority": "low", "done": true },
+//   { "title": "todos 3", "priority": "high", "done": true },
+//   { "title": "todos 4", "priority": "mediom", "done": false },
+// ]
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <EnhancedTable />
+
+      <p>With Love from Ioan Zicu</p>
     </div>
   );
 }
