@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -218,41 +218,22 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function EnhancedTable() {
     const classes = useStyles();
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof Data>('priority');
-    const [selected, setSelected] = React.useState<string[]>([]);
+    const [order, setOrder] = useState<Order>('asc');
+    const [orderBy, setOrderBy] = useState<keyof Data>('priority');
+    const [selected, setSelected] = useState<string[]>([]);
 
-    const [update, setUpdate] = React.useState<boolean>(false);
-    const [dataRows, setData] = React.useState<Data[]>(rows);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [update, setUpdate] = useState<boolean>(false);
+    const [dataRows, setData] = useState<Data[]>(rows);
+    const [page, setPage] = useState<number>(0);
+    const [dense, setDense] = useState<boolean>(false);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+    const [showDelete, setShowDelete] = useState<string>('');
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
-
-    // const handleClick = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
-    //     const selectedIndex = selected.indexOf(name);
-    //     let newSelected: string[] = [];
-
-    //     if (selectedIndex === -1) {
-    //         newSelected = newSelected.concat(selected, name);
-    //     } else if (selectedIndex === 0) {
-    //         newSelected = newSelected.concat(selected.slice(1));
-    //     } else if (selectedIndex === selected.length - 1) {
-    //         newSelected = newSelected.concat(selected.slice(0, -1));
-    //     } else if (selectedIndex > 0) {
-    //         newSelected = newSelected.concat(
-    //             selected.slice(0, selectedIndex),
-    //             selected.slice(selectedIndex + 1),
-    //         );
-    //     }
-
-    //     setSelected(newSelected);
-    // };
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -269,7 +250,6 @@ export default function EnhancedTable() {
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-
     const getIndex = (value: string, data: Data[]): number => {
         let index: number = -1;
         data.map((row, idx) => {
@@ -281,30 +261,48 @@ export default function EnhancedTable() {
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>, id: string) => {
-
         const selectedIndex = getIndex(id, dataRows);
-        // let newSelected: Data[] = [];
 
-        if (selectedIndex === -1) {
-            // newSelected = newSelected.concat(dataRows, dataRows[selectedIndex]);
-        } else if (selectedIndex === 0) {
+        if (selectedIndex === 0) {
             dataRows[selectedIndex] = { ...dataRows[selectedIndex], [event.target.name]: event.target.checked }
             setData(dataRows)
-            // newSelected = newSelected.concat(dataRows.slice(1));
-
         } else if (selectedIndex === selected.length - 1) {
             dataRows[selectedIndex] = { ...dataRows[selectedIndex], [event.target.name]: event.target.checked }
-            // newSelected = newSelected.concat(dataRows.slice(0, -1));
         } else if (selectedIndex > 0) {
             dataRows[selectedIndex] = { ...dataRows[selectedIndex], [event.target.name]: event.target.checked }
-            // newSelected = newSelected.concat(
-            //     dataRows.slice(0, selectedIndex),
-            //     dataRows.slice(selectedIndex + 1),
-            // );
         }
 
         setUpdate(!update);
     };
+
+    const removeRow = (id: string) => {
+        const selectedIndex = getIndex(id, dataRows);
+        let newDataRows: Data[] = [];
+
+        if (selectedIndex === -1) {
+            newDataRows = newDataRows.concat(dataRows, dataRows[selectedIndex]);
+        } else if (selectedIndex === 0) {
+            newDataRows = newDataRows.concat(dataRows.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newDataRows = newDataRows.concat(dataRows.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newDataRows = newDataRows.concat(
+                dataRows.slice(0, selectedIndex),
+                dataRows.slice(selectedIndex + 1),
+            );
+        }
+
+        setData(newDataRows)
+    }
+
+    const onMouseEnter = (id: string): void => {
+        setShowDelete(id)
+        console.log(id)
+    }
+
+    const onMouseLeave = (): void => {
+        setShowDelete('')
+    }
 
     return (
         <div className={classes.root}>
@@ -336,11 +334,10 @@ export default function EnhancedTable() {
                                     return (
                                         <TableRow
                                             hover
-                                            // onClick={(event) => handleClick(event, row.name)}
-                                            // role="checkbox"
+                                            onMouseEnter={() => onMouseEnter(row.id)}
+                                            onMouseLeave={() => onMouseLeave()}
                                             tabIndex={-1}
                                             key={row.id}
-                                        // selected={isItemSelected}
                                         >
                                             <TableCell component="th" id={labelId} scope="row">
                                                 {row.name}
@@ -348,13 +345,19 @@ export default function EnhancedTable() {
                                             <TableCell align="center">{row.priority}</TableCell>
                                             <TableCell padding="checkbox">
                                                 <Checkbox
-                                                    // onChange={(event) => handleClick(event, row.name)}
                                                     name='done'
                                                     onChange={(event) => handleChange(event, row.id)}
                                                     checked={row.done}
                                                     inputProps={{ 'aria-labelledby': labelId }}
                                                 />
                                             </TableCell>
+                                            {showDelete === row.id && (
+                                                <span onClick={() => removeRow(row.id)}>
+                                                    <IconButton aria-label="Delete">
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </span>
+                                            )}
                                         </TableRow>
                                     );
                                 })}
@@ -380,6 +383,6 @@ export default function EnhancedTable() {
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Dense padding"
             />
-        </div>
+        </div >
     );
 }
