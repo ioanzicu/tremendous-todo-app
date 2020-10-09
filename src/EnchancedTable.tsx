@@ -148,7 +148,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                     {numSelected} selected
                 </Typography>
             ) : (
-                    <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+                    <Typography className={classes.title} variant="h5" id="tableTitle" component="div">
                         Epic Todo List
                     </Typography>
                 )}

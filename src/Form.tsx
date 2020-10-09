@@ -7,7 +7,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import LowPriorityIcon from '@material-ui/icons/LowPriority';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import { saveOnLocal } from './StorageManagement';
+import { saveOnLocal, getDataFromLocal } from './StorageManagement';
 import { Data, IPriority } from './CustomTypes';
 
 function uniqueId() {
@@ -30,14 +30,7 @@ const priority: IPriority = {
     'low': 'Low',
 }
 
-export const rows: Data[] = [
-    // createData('Learn to play basse', priority.high, false),
-    // createData('Learn Polish language', priority.low, false),
-    // createData('Buy food', priority.medium, false),
-    // createData('Clean the room', priority.low, false),
-    // createData('Finish diploma thesis', priority.high, false),
-    // createData('Go to a pizza with firends', priority.medium, true),
-];
+export const rows: Data[] = getDataFromLocal();
 
 const useStyles: (props?: any) => Record<"root", string> = makeStyles((theme: Theme) =>
     createStyles({
