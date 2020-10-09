@@ -7,7 +7,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import LowPriorityIcon from '@material-ui/icons/LowPriority';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import { Data } from './CustomTypes';
+import { Data, IPriority } from './CustomTypes';
 
 function uniqueId() {
     let u = Date.now().toString(16) + Math.random().toString(16) + '0'.repeat(16);
@@ -23,13 +23,13 @@ function createData(
     return { id: uniqueId(), name, priority, done };
 }
 
-const priority: { high: string, medium: string, low: string } = {
+const priority: IPriority = {
     'high': 'High',
     'medium': 'Medium',
     'low': 'Low',
 }
 
-export const rows = [
+export const rows: Data[] = [
     createData('Learn to play basse', priority.high, false),
     createData('Learn Polish language', priority.low, false),
     createData('Buy food', priority.medium, false),
@@ -38,7 +38,7 @@ export const rows = [
     createData('Go to a pizza with firends', priority.medium, true),
 ];
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles: (props?: any) => Record<"root", string> = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             '& > div': {
