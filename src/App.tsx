@@ -23,7 +23,7 @@ function App() {
       </Button>
 
       {showForm ? (
-        <Form />
+        <Form showForm={showForm} setShowForm={setShowForm} />
       ) : (
           <div>
             <hr />

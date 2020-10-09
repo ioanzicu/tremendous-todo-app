@@ -9,13 +9,18 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import { Data } from './CustomTypes';
 
+function uniqueId() {
+    let u = Date.now().toString(16) + Math.random().toString(16) + '0'.repeat(16);
+    let guid = [u.substr(0, 8), u.substr(8, 4), '4000-8' + u.substr(13, 3), u.substr(16, 12)].join('-');
+    return guid;
+}
+
 function createData(
-    id: string,
     name: string,
     priority: string,
     done: boolean,
 ): Data {
-    return { id, name, priority, done };
+    return { id: uniqueId(), name, priority, done };
 }
 
 const priority: { high: string, medium: string, low: string } = {
@@ -25,12 +30,12 @@ const priority: { high: string, medium: string, low: string } = {
 }
 
 export const rows = [
-    createData('1asdas', 'Learn to play basse', priority.high, false),
-    createData('2adasda', 'Learn Polish language', priority.low, false),
-    createData('3aasdad', 'Buy food', priority.medium, false),
-    createData('4awda', 'Clean the room', priority.low, false),
-    createData('5wwda', 'Finish diploma thesis', priority.high, false),
-    createData('6are', 'Go to a pizza with firends', priority.medium, true),
+    createData('Learn to play basse', priority.high, false),
+    createData('Learn Polish language', priority.low, false),
+    createData('Buy food', priority.medium, false),
+    createData('Clean the room', priority.low, false),
+    createData('Finish diploma thesis', priority.high, false),
+    createData('Go to a pizza with firends', priority.medium, true),
 ];
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,12 +52,18 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function Form() {
+interface IForm {
+    showForm: Boolean,
+    setShowForm: any,
+}
+
+export default function Form({ showForm, setShowForm }: IForm) {
     const classes = useStyles();
 
     const [name, setName] = useState<string>('');
     const [taskPriority, setPriority] = useState<string>('Medium');
     const [checked, setChecked] = useState<boolean>(false);
+    const [validData, setValidData] = useState<boolean>(false);
 
     const priorityValues: {
         value: string;
@@ -85,10 +96,20 @@ export default function Form() {
     };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        let todo = { name, taskPriority, done: checked };
-        console.log(todo);
         event.preventDefault();
 
+        if (name === '') {
+            setValidData(!validData);
+            return;
+        }
+
+        let newTodo: Data = createData(name, taskPriority, checked);
+        rows.push(newTodo);
+
+        // Redirect to the Tasks table
+        setShowForm(!showForm);
+
+        // Clean the form
         setName('');
         setPriority('Medium');
         setChecked(false);
@@ -100,15 +121,22 @@ export default function Form() {
             <h1>Add a new Task</h1>
 
             <form className={classes.root} noValidate onSubmit={handleSubmit} autoComplete="off">
-                <TextField id="standard-basic" onChange={handleTaskName} value={name} label="Task Name" />
+                <TextField
+                    id="standard-basic"
+                    error={validData}
+                    onChange={handleTaskName}
+                    value={name}
+                    label="Task Name"
+                    helperText="*Field cannot be empty"
+                />
                 <br />
                 <TextField
                     id="standard-select-priority"
                     select
                     label="Priority"
-                    value={priority}
+                    value={taskPriority}
                     onChange={handlePriorityChange}
-                    helperText="Please Priority of the Task"
+                    helperText="Please Select the Priority of the Task"
                 >
                     {priorityValues.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
