@@ -18,38 +18,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Data } from './CustomTypes';
+import { rows } from './Form';
 import "./EnchancedTable.css";
-
-const priority: { high: string, medium: string, low: string } = {
-    'high': 'High',
-    'medium': 'Medium',
-    'low': 'Low',
-}
-
-interface Data {
-    id: string,
-    name: string,
-    priority: string,
-    done: boolean,
-}
-
-function createData(
-    id: string,
-    name: string,
-    priority: string,
-    done: boolean,
-): Data {
-    return { id, name, priority, done };
-}
-
-const rows = [
-    createData('1asdas', 'Learn to play basse', priority.high, false),
-    createData('2adasda', 'Learn Polish language', priority.low, false),
-    createData('3aasdad', 'Buy food', priority.medium, false),
-    createData('4awda', 'Clean the room', priority.low, false),
-    createData('5wwda', 'Finish diploma thesis', priority.high, false),
-    createData('6are', 'Go to a pizza with firends', priority.medium, true),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
