@@ -18,7 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import "./EnchancedTable.css";
 
 const priority: { high: string, medium: string, low: string } = {
     'high': 'High',
@@ -191,7 +191,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: '90%',
+            width: '80%',
             marginLeft: 'auto',
             marginRight: 'auto',
         },
@@ -295,14 +295,9 @@ export default function EnhancedTable() {
         setData(newDataRows)
     }
 
-    const onMouseEnter = (id: string): void => {
-        setShowDelete(id)
-        console.log(id)
-    }
+    const onMouseEnter = (id: string): void => setShowDelete(id);
 
-    const onMouseLeave = (): void => {
-        setShowDelete('')
-    }
+    const onMouseLeave = (): void => setShowDelete('');
 
     return (
         <div className={classes.root}>
@@ -351,13 +346,20 @@ export default function EnhancedTable() {
                                                     inputProps={{ 'aria-labelledby': labelId }}
                                                 />
                                             </TableCell>
-                                            {showDelete === row.id && (
-                                                <span onClick={() => removeRow(row.id)}>
-                                                    <IconButton aria-label="Delete">
-                                                        <DeleteIcon />
-                                                    </IconButton>
+                                            <TableCell
+                                                padding='none'
+                                                size='small'>
+                                                <span
+                                                    className={showDelete === row.id ? 'buttonVisible' : 'buttonHidden'}
+                                                    onClick={() => removeRow(row.id)}
+                                                >
+                                                    <Tooltip title="Delete">
+                                                        <IconButton className={'deleteButon'} aria-label="Delete">
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
                                                 </span>
-                                            )}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}

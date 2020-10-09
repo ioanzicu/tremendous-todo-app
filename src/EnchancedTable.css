@@ -1,0 +1,14 @@
+.buttonVisible {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+.buttonHidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.deleteButon:hover {
+    color: red;
+}
