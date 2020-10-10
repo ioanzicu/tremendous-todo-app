@@ -24,7 +24,7 @@ import { rows } from './Form';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
 import { IPriority } from './CustomTypes';
 import { getKeyByValue } from './Utils';
-import './EnchancedTable.css';
+import './styles/EnchancedTable.css';
 
 const priority: IPriority = {
     'High': 2,

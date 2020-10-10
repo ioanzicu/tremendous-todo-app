@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './styles/App.css';
 import EnhancedTable from './EnchancedTable';
 import Form from './Form';
 import Button from '@material-ui/core/Button';
