@@ -65,7 +65,7 @@ const headCells: IHeadCell[] = [
     { id: 'done', numeric: true, disablePadding: false, label: 'Done' },
 ];
 
-interface EnhancedTableProps {
+interface IEnhancedTableProps {
     classes: ReturnType<typeof useStyles>;
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
@@ -93,7 +93,26 @@ const StyledTableCell = withStyles((theme: Theme) =>
     }),
 )(TableCell);
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+
+const StyledTableSortLabel = withStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            color: 'white',
+            "&:hover": {
+                color: 'white',
+            },
+            '&$active': {
+                color: 'white',
+            },
+        },
+        active: {},
+        icon: {
+            color: 'inherit !important'
+        },
+    })
+)(TableSortLabel);
+
+function EnhancedTableHead(props: IEnhancedTableProps) {
     const { classes, order, orderBy, onRequestSort } = props;
     const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
@@ -109,7 +128,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         padding='default'
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
-                        <TableSortLabel
+                        <StyledTableSortLabel
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : 'asc'}
                             onClick={createSortHandler(headCell.id)}
@@ -120,7 +139,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                                 </span>
                             ) : null}
-                        </TableSortLabel>
+                        </StyledTableSortLabel>
                     </StyledTableCell>
                 ))}
                 {/* Placeholder space */}
