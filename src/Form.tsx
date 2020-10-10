@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { ThemeProvider, createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
@@ -9,9 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
 import { uniqueId, getKeyByValue } from './Utils';
-import { Data, IPriority } from './CustomTypes';
-
-
+import { Data, IPriority, IForm } from './CustomTypes';
 
 function createData(
     name: string,
@@ -43,12 +41,7 @@ const useStyles: (props?: any) => Record<"root", string> = makeStyles((theme: Th
     }),
 );
 
-interface IForm {
-    showForm: Boolean,
-    setShowForm: any,
-}
-
-export default function Form({ showForm, setShowForm }: IForm) {
+export default function Form({ showForm, setShowForm, theme }: IForm) {
     const classes = useStyles();
 
     const [name, setName] = useState<string>('');
@@ -111,9 +104,7 @@ export default function Form({ showForm, setShowForm }: IForm) {
 
     return (
         <div>
-
             <h1>Add a new Task</h1>
-
             <form className={classes.root} noValidate onSubmit={handleSubmit} autoComplete="off">
                 <TextField
                     id="standard-basic"
@@ -149,9 +140,13 @@ export default function Form({ showForm, setShowForm }: IForm) {
                 </div>
                 <div>
                     <br />
-                    <Button variant="contained" type="submit" color="primary">
-                        Submit
+                    <ThemeProvider theme={theme}>
+
+                        <Button variant="contained" type="submit" color="primary">
+                            Submit
                     </Button>
+                    </ThemeProvider>
+
                 </div>
             </form>
         </div>

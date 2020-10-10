@@ -1,3 +1,5 @@
+import { Theme } from "@material-ui/core";
+
 export interface Data {
     id: string,
     name: string,
@@ -13,4 +15,10 @@ export interface IPriority {
 
 export interface EnhancedTableToolbarProps {
     numSelected: number;
+}
+
+export interface IForm {
+    showForm: Boolean,
+    setShowForm: React.Dispatch<React.SetStateAction<Boolean>>,
+    theme: Theme,
 }

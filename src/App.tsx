@@ -1,8 +1,24 @@
 import React, { useState } from 'react';
 import './styles/App.css';
+import { ThemeProvider } from '@material-ui/core/styles';
 import EnhancedTable from './EnchancedTable';
 import Form from './Form';
 import Button from '@material-ui/core/Button';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { orange, deepOrange } from '@material-ui/core/colors';
+import { Author } from './Author';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: orange[500],
+    },
+    secondary: {
+      main: deepOrange[500],
+    },
+  },
+});
+
 
 function App() {
   const [showForm, setShowForm] = useState<Boolean>(false);
@@ -15,14 +31,15 @@ function App() {
 
   return (
     <div className="App">
-      <hr />
-
-      <Button color="primary" onClick={handleClick}>
-        {buttonText}
-      </Button>
+      <br />
+      <ThemeProvider theme={theme}>
+        <Button color="primary" onClick={handleClick}>
+          {buttonText}
+        </Button>
+      </ThemeProvider>
 
       {showForm ? (
-        <Form showForm={showForm} setShowForm={setShowForm} />
+        <Form showForm={showForm} theme={theme} setShowForm={setShowForm} />
       ) : (
           <div>
             <hr />
@@ -30,10 +47,8 @@ function App() {
           </div>
         )}
 
-      <p>
-        With <span role="img" aria-labelledby='love'>❤️</span> from <a href='https://ioanzicu.netlify.app/' target='blank' style={{ color: 'inherit' }} >
-          Ioan Zîcu</a>
-      </p>
+      <hr />
+      <Author />
     </div>
   );
 }
