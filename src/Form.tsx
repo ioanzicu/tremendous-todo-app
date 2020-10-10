@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
 import { uniqueId, getKeyByValue } from './Utils';
 import { Data, IPriority, IForm } from './CustomTypes';
+import { theme } from './CustomStyles';
+import { useCheckboxStyles } from './CustomStyles';
 
 function createData(
     name: string,
@@ -41,8 +43,9 @@ const useStyles: (props?: any) => Record<"root", string> = makeStyles((theme: Th
     }),
 );
 
-export default function Form({ showForm, setShowForm, theme }: IForm) {
+export default function Form({ showForm, setShowForm }: IForm) {
     const classes = useStyles();
+    const checkBoxClasses = useCheckboxStyles();
 
     const [name, setName] = useState<string>('');
     const [taskPriority, setPriority] = useState<number>(1); //'Medium'
@@ -112,7 +115,7 @@ export default function Form({ showForm, setShowForm, theme }: IForm) {
                     onChange={handleTaskName}
                     value={name}
                     label="Task Name"
-                    helperText="*Field cannot be empty"
+                    helperText={validData && "* Field cannot be empty"}
                 />
                 <br />
                 <TextField
@@ -134,6 +137,10 @@ export default function Form({ showForm, setShowForm, theme }: IForm) {
                     Done:
                 <Checkbox
                         checked={checked}
+                        classes={{
+                            root: checkBoxClasses.root,
+                            checked: checkBoxClasses.checked,
+                        }}
                         onChange={handleDoneChange}
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />

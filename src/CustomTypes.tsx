@@ -1,5 +1,3 @@
-import { Theme } from "@material-ui/core";
-
 export interface Data {
     id: string,
     name: string,
@@ -16,5 +14,11 @@ export interface IPriority {
 export interface IForm {
     showForm: Boolean,
     setShowForm: React.Dispatch<React.SetStateAction<Boolean>>,
-    theme: Theme,
+}
+
+export interface IHeadCell {
+    disablePadding: boolean;
+    id: keyof Data;
+    label: string;
+    numeric: boolean;
 }

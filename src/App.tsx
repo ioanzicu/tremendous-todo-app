@@ -4,21 +4,8 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import EnhancedTable from './EnchancedTable';
 import Form from './Form';
 import Button from '@material-ui/core/Button';
-import { createMuiTheme } from '@material-ui/core/styles';
-import { orange, deepOrange } from '@material-ui/core/colors';
 import { Author } from './Author';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: orange[500],
-    },
-    secondary: {
-      main: deepOrange[500],
-    },
-  },
-});
-
+import { theme } from './CustomStyles';
 
 function App() {
   const [showForm, setShowForm] = useState<Boolean>(false);
@@ -33,13 +20,13 @@ function App() {
     <div className="App">
       <br />
       <ThemeProvider theme={theme}>
-        <Button color="primary" onClick={handleClick}>
+        <Button variant="contained" color="primary" onClick={handleClick}>
           {buttonText}
         </Button>
       </ThemeProvider>
 
       {showForm ? (
-        <Form showForm={showForm} theme={theme} setShowForm={setShowForm} />
+        <Form showForm={showForm} setShowForm={setShowForm} />
       ) : (
           <div>
             <hr />

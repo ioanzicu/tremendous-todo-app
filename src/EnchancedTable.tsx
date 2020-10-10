@@ -13,14 +13,13 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { orange } from '@material-ui/core/colors';
-
 
 import { Data } from './CustomTypes';
 import { rows } from './Form';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
-import { IPriority } from './CustomTypes';
+import { IPriority, IHeadCell } from './CustomTypes';
 import { getKeyByValue } from './Utils';
+import { useCheckboxStyles } from './CustomStyles';
 import './styles/EnchancedTable.css';
 
 const priority: IPriority = {
@@ -60,14 +59,7 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-interface HeadCell {
-    disablePadding: boolean;
-    id: keyof Data;
-    label: string;
-    numeric: boolean;
-}
-
-const headCells: HeadCell[] = [
+const headCells: IHeadCell[] = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Task Name' },
     { id: 'priority', numeric: true, disablePadding: false, label: 'Priority' },
     { id: 'done', numeric: true, disablePadding: false, label: 'Done' },
@@ -180,19 +172,6 @@ declare module '@material-ui/core/styles/createMuiTheme' {
         };
     }
 }
-
-const useCheckboxStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            color: '#A9A9A9',
-            '&$checked': {
-                color: orange[500],
-            },
-        },
-        checked: {},
-    }),
-);
-
 
 export default function EnhancedTable() {
     const classes = useStyles();
