@@ -156,7 +156,7 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
         },
         paper: {
-            width: '80%',
+            width: '100%',
             marginLeft: 'auto',
             marginRight: 'auto',
             marginBottom: theme.spacing(2),

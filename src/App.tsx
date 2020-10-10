@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './styles/App.css';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider, useTheme } from '@material-ui/core/styles';
 import EnhancedTable from './EnchancedTable';
 import Form from './Form';
 import Button from '@material-ui/core/Button';
 import { Author } from './Author';
 import { theme } from './CustomStyles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 function App() {
   const [showForm, setShowForm] = useState<Boolean>(false);
@@ -16,6 +17,16 @@ function App() {
 
   const buttonText = showForm ? 'Return to the Tasks' : 'Add a New Task';
 
+  // Media Query
+  const queryTheme = useTheme();
+  const mediumSize = useMediaQuery(queryTheme.breakpoints.up('md'));
+
+  const wrapperStyle = {
+    width: mediumSize ? '80%' : '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
@@ -24,7 +35,7 @@ function App() {
         {showForm ? (
           <Form showForm={showForm} setShowForm={setShowForm} />
         ) : (
-            <div>
+            <div style={wrapperStyle}>
               <EnhancedTable />
             </div>
           )}
@@ -38,6 +49,6 @@ function App() {
       </div>
     </ThemeProvider>
   );
-}
+};
 
 export default App;
