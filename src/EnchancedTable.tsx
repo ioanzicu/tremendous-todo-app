@@ -21,7 +21,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { Data, EnhancedTableToolbarProps } from './CustomTypes';
 import { rows } from './Form';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
-import "./EnchancedTable.css";
+import { IPriority } from './CustomTypes';
+import { getKeyByValue } from './Utils';
+import './EnchancedTable.css';
+
+const priority: IPriority = {
+    'High': 2,
+    'Medium': 1,
+    'Low': 0,
+}
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -77,7 +85,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-    const { classes, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+    const { classes, order, orderBy, onRequestSort } = props;
     const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
@@ -122,8 +130,7 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
                 ? {
                     color: theme.palette.secondary.main,
                     backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-                }
-                : {
+                } : {
                     color: theme.palette.text.primary,
                     backgroundColor: theme.palette.secondary.dark,
                 },
@@ -312,7 +319,7 @@ export default function EnhancedTable() {
                                             <TableCell component="th" id={labelId} scope="row">
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="center">{row.priority}</TableCell>
+                                            <TableCell align="center">{getKeyByValue(priority, row.priority)}</TableCell>
                                             <TableCell padding="checkbox">
                                                 <Checkbox
                                                     name='done'

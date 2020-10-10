@@ -1,14 +1,14 @@
 export interface Data {
     id: string,
     name: string,
-    priority: string,
+    priority: number,
     done: boolean,
 };
 
 export interface IPriority {
-    high: string,
-    medium: string,
-    low: string
+    High: number,
+    Medium: number,
+    Low: number
 };
 
 export interface EnhancedTableToolbarProps {

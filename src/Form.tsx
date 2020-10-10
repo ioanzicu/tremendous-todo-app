@@ -8,26 +8,23 @@ import LowPriorityIcon from '@material-ui/icons/LowPriority';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
+import { uniqueId, getKeyByValue } from './Utils';
 import { Data, IPriority } from './CustomTypes';
 
-function uniqueId() {
-    let u = Date.now().toString(16) + Math.random().toString(16) + '0'.repeat(16);
-    let guid = [u.substr(0, 8), u.substr(8, 4), '4000-8' + u.substr(13, 3), u.substr(16, 12)].join('-');
-    return guid;
-}
+
 
 function createData(
     name: string,
-    priority: string,
+    priority: number,
     done: boolean,
 ): Data {
     return { id: uniqueId(), name, priority, done };
 }
 
 const priority: IPriority = {
-    'high': 'High',
-    'medium': 'Medium',
-    'low': 'Low',
+    'High': 2,
+    'Medium': 1,
+    'Low': 0,
 }
 
 export const rows: Data[] = getDataFromLocal();
@@ -55,24 +52,24 @@ export default function Form({ showForm, setShowForm }: IForm) {
     const classes = useStyles();
 
     const [name, setName] = useState<string>('');
-    const [taskPriority, setPriority] = useState<string>('Medium');
+    const [taskPriority, setPriority] = useState<number>(1); //'Medium'
     const [checked, setChecked] = useState<boolean>(false);
     const [validData, setValidData] = useState<boolean>(false);
 
     const priorityValues: {
-        value: string;
+        value: number;
         label: any;
     }[] = [
             {
-                value: priority.high,
+                value: priority.High,
                 label: PriorityHighIcon,
             },
             {
-                value: priority.medium,
+                value: priority.Medium,
                 label: WarningIcon
             },
             {
-                value: priority.low,
+                value: priority.Low,
                 label: LowPriorityIcon,
             },
         ];
@@ -82,7 +79,7 @@ export default function Form({ showForm, setShowForm }: IForm) {
     }
 
     const handlePriorityChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setPriority(event.target.value);
+        setPriority(parseInt(event.target.value));
     };
 
     const handleDoneChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -108,7 +105,7 @@ export default function Form({ showForm, setShowForm }: IForm) {
 
         // Clean the form
         setName('');
-        setPriority('Medium');
+        setPriority(1); //'Medium'
         setChecked(false);
     };
 
@@ -137,7 +134,7 @@ export default function Form({ showForm, setShowForm }: IForm) {
                 >
                     {priorityValues.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
-                            <option.label /> - {option.value}
+                            <option.label /> - {getKeyByValue(priority, option.value)}
                         </MenuItem>
                     ))}
                 </TextField>
