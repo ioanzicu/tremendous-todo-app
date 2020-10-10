@@ -300,7 +300,10 @@ export default function EnhancedTable() {
                                                 {row.name}
                                             </TableCell>
                                             <TableCell align="center">{getKeyByValue(priority, row.priority)}</TableCell>
-                                            <TableCell padding="checkbox">
+                                            <TableCell
+                                                align="center"
+                                                padding="checkbox"
+                                            >
                                                 <Checkbox
                                                     name='done'
                                                     classes={{
