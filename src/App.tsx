@@ -30,7 +30,10 @@ function App() {
           </div>
         )}
 
-      <p>With Love from Ioan Zicu</p>
+      <p>
+        With <span role="img" aria-labelledby='love'>❤️</span> from <a href='https://ioanzicu.netlify.app/' target='blank' style={{ color: 'inherit' }} >
+          Ioan Zîcu</a>
+      </p>
     </div>
   );
 }
