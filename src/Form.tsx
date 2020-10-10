@@ -127,7 +127,7 @@ export default function Form({ showForm, setShowForm }: IForm) {
                 >
                     {priorityValues.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
-                            <option.label /> - {getKeyByValue(priority, option.value)}
+                            <option.label fontSize="small" style={{ paddingRight: '1rem' }} /> {getKeyByValue(priority, option.value)}
                         </MenuItem>
                     ))}
                 </TextField>
