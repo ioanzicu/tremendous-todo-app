@@ -22,7 +22,7 @@ function App() {
   const mediumSize = useMediaQuery(queryTheme.breakpoints.up('md'));
 
   const wrapperStyle = {
-    width: mediumSize ? '80%' : '100%',
+    width: mediumSize ? '80%' : '95%',
     marginLeft: 'auto',
     marginRight: 'auto',
   };

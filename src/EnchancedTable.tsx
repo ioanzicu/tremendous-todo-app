@@ -174,23 +174,9 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'absolute',
             top: 20,
             width: 1,
-        },
+        }
     }),
 );
-
-declare module '@material-ui/core/styles/createMuiTheme' {
-    interface Theme {
-        status: {
-            danger: string;
-        };
-    }
-    // allow configuration using `createMuiTheme`
-    interface ThemeOptions {
-        status?: {
-            danger?: string;
-        };
-    }
-}
 
 export default function EnhancedTable() {
     const classes = useStyles();
@@ -327,8 +313,9 @@ export default function EnhancedTable() {
                                                 />
                                             </TableCell>
                                             <TableCell
-                                                padding='none'
-                                                size='small'>
+                                                padding="checkbox"
+                                                size='small'
+                                            >
                                                 <span
                                                     className={showDelete === row.id ? 'buttonVisible' : 'buttonHidden'}
                                                     onClick={() => removeRow(row.id)}
