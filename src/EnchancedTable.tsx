@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { lighten, withStyles, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { withStyles, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,8 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,7 +16,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { orange } from '@material-ui/core/colors';
 
 
-import { Data, EnhancedTableToolbarProps } from './CustomTypes';
+import { Data } from './CustomTypes';
 import { rows } from './Form';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
 import { IPriority } from './CustomTypes';
@@ -141,38 +138,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         </TableHead >
     );
 }
-
-const useToolbarStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            paddingLeft: theme.spacing(2),
-            paddingRight: theme.spacing(1),
-        },
-        highlight:
-            theme.palette.type === 'light'
-                ? {
-                    color: theme.palette.secondary.main,
-                    backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-                } : {
-                    color: theme.palette.text.primary,
-                    backgroundColor: theme.palette.secondary.dark,
-                },
-        title: {
-            flex: '1 1 100%',
-        },
-    }),
-);
-
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-    const classes = useToolbarStyles();
-    return (
-        <Toolbar className={clsx(classes.root)}>
-            <Typography className={classes.title} variant="h5" id="tableTitle" component="div">
-                Epic Todo List
-            </Typography>
-        </Toolbar>
-    );
-};
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -315,9 +280,8 @@ export default function EnhancedTable() {
 
     return (
         <div className={classes.root}>
+            <h2>Epic Todo List</h2>
             <Paper className={classes.paper}>
-
-                <EnhancedTableToolbar numSelected={selected.length} />
                 <TableContainer>
                     <Table
                         className={classes.table}

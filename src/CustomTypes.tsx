@@ -13,10 +13,6 @@ export interface IPriority {
     Low: number
 };
 
-export interface EnhancedTableToolbarProps {
-    numSelected: number;
-}
-
 export interface IForm {
     showForm: Boolean,
     setShowForm: React.Dispatch<React.SetStateAction<Boolean>>,
