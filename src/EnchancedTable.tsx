@@ -153,16 +153,16 @@ function EnhancedTableHead(props: IEnhancedTableProps) {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
+            width: '100%',
+        },
+        paper: {
             width: '80%',
             marginLeft: 'auto',
             marginRight: 'auto',
-        },
-        paper: {
-            width: '100%',
             marginBottom: theme.spacing(2),
         },
         table: {
-            minWidth: 500,
+            minWidth: 400,
         },
         visuallyHidden: {
             border: 0,
