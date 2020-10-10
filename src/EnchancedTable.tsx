@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
+import { lighten, withStyles, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,6 +18,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { deepOrange, orange } from '@material-ui/core/colors';
+
+
 import { Data, EnhancedTableToolbarProps } from './CustomTypes';
 import { rows } from './Form';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
@@ -84,6 +87,28 @@ interface EnhancedTableProps {
     rowCount: number;
 }
 
+const StyledTableCell = withStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            backgroundColor: '#595338',
+            color: theme.palette.common.white,
+            '&:hover': {
+                color: theme.palette.common.white,
+            },
+        },
+        '&:active': {
+            color: 'orange',
+        },
+        head: {
+            backgroundColor: '#595338',
+            color: theme.palette.common.white,
+        },
+        body: {
+            fontSize: 14,
+        },
+    }),
+)(TableCell);
+
 function EnhancedTableHead(props: EnhancedTableProps) {
     const { classes, order, orderBy, onRequestSort } = props;
     const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -94,7 +119,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         <TableHead>
             <TableRow>
                 {headCells.map((headCell) => (
-                    <TableCell
+                    <StyledTableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'center' : 'left'}
                         padding='default'
@@ -112,10 +137,13 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                                 </span>
                             ) : null}
                         </TableSortLabel>
-                    </TableCell>
+                    </StyledTableCell>
                 ))}
+                {/* Placeholder space */}
+                <StyledTableCell>
+                </StyledTableCell>
             </TableRow>
-        </TableHead>
+        </TableHead >
     );
 }
 
@@ -142,23 +170,11 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     const classes = useToolbarStyles();
-    const { numSelected } = props;
-
     return (
-        <Toolbar
-            className={clsx(classes.root, {
-                [classes.highlight]: numSelected > 0,
-            })}
-        >
-            {numSelected > 0 ? (
-                <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-                    {numSelected} selected
-                </Typography>
-            ) : (
-                    <Typography className={classes.title} variant="h5" id="tableTitle" component="div">
-                        Epic Todo List
-                    </Typography>
-                )}
+        <Toolbar className={clsx(classes.root)}>
+            <Typography className={classes.title} variant="h5" id="tableTitle" component="div">
+                Epic Todo List
+            </Typography>
         </Toolbar>
     );
 };
@@ -191,9 +207,36 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
+declare module '@material-ui/core/styles/createMuiTheme' {
+    interface Theme {
+        status: {
+            danger: string;
+        };
+    }
+    // allow configuration using `createMuiTheme`
+    interface ThemeOptions {
+        status?: {
+            danger?: string;
+        };
+    }
+}
+
+const useCheckboxStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            color: '#A9A9A9',
+            '&$checked': {
+                color: orange[500],
+            },
+        },
+        checked: {},
+    }),
+);
+
 
 export default function EnhancedTable() {
     const classes = useStyles();
+    const checkBoxClasses = useCheckboxStyles();
     const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<keyof Data>('priority');
     const [selected] = useState<string[]>([]);
@@ -207,7 +250,6 @@ export default function EnhancedTable() {
 
     useEffect(() => {
         let todos = getDataFromLocal();
-        console.log('todos', todos, todos.length, typeof (todos));
         setData(todos);
     }, [])
 
@@ -301,6 +343,7 @@ export default function EnhancedTable() {
                             onRequestSort={handleRequestSort}
                             rowCount={dataRows.length}
                         />
+
                         <TableBody>
                             {stableSort(dataRows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -323,6 +366,10 @@ export default function EnhancedTable() {
                                             <TableCell padding="checkbox">
                                                 <Checkbox
                                                     name='done'
+                                                    classes={{
+                                                        root: checkBoxClasses.root,
+                                                        checked: checkBoxClasses.checked,
+                                                    }}
                                                     onChange={(event) => handleChange(event, row.id)}
                                                     checked={row.done}
                                                     inputProps={{ 'aria-labelledby': labelId }}
