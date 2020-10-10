@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeProvider, createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
@@ -10,7 +10,6 @@ import Button from '@material-ui/core/Button';
 import { saveOnLocal, getDataFromLocal } from './StorageManagement';
 import { uniqueId, getKeyByValue } from './Utils';
 import { Data, IPriority, IForm } from './CustomTypes';
-import { theme } from './CustomStyles';
 import { useCheckboxStyles } from './CustomStyles';
 
 function createData(
@@ -107,7 +106,7 @@ export default function Form({ showForm, setShowForm }: IForm) {
 
     return (
         <div>
-            <h1>Add a new Task</h1>
+            <h2>Add a new Task</h2>
             <form className={classes.root} noValidate onSubmit={handleSubmit} autoComplete="off">
                 <TextField
                     id="standard-basic"
@@ -135,7 +134,7 @@ export default function Form({ showForm, setShowForm }: IForm) {
                 <br />
                 <div>
                     Done:
-                <Checkbox
+                        <Checkbox
                         checked={checked}
                         classes={{
                             root: checkBoxClasses.root,
@@ -147,15 +146,11 @@ export default function Form({ showForm, setShowForm }: IForm) {
                 </div>
                 <div>
                     <br />
-                    <ThemeProvider theme={theme}>
-
-                        <Button variant="contained" type="submit" color="primary">
-                            Submit
-                    </Button>
-                    </ThemeProvider>
-
+                    <Button variant="contained" type="submit" color="primary">
+                        Submit
+                        </Button>
                 </div>
             </form>
-        </div>
+        </div >
     );
 }

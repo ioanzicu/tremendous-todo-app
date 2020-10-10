@@ -17,26 +17,26 @@ function App() {
   const buttonText = showForm ? 'Return to the Tasks' : 'Add a New Task';
 
   return (
-    <div className="App">
-      <br />
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+
+        <div style={{ paddingTop: '1rem' }}></div>
+        {showForm ? (
+          <Form showForm={showForm} setShowForm={setShowForm} />
+        ) : (
+            <div>
+              <EnhancedTable />
+            </div>
+          )}
+        <br />
         <Button variant="contained" color="primary" onClick={handleClick}>
           {buttonText}
         </Button>
-      </ThemeProvider>
 
-      {showForm ? (
-        <Form showForm={showForm} setShowForm={setShowForm} />
-      ) : (
-          <div>
-            <hr />
-            <EnhancedTable />
-          </div>
-        )}
+        <Author />
 
-      <hr />
-      <Author />
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
 
