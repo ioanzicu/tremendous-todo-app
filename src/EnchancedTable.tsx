@@ -196,7 +196,7 @@ export default function EnhancedTable() {
     const classes = useStyles();
     const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<keyof Data>('priority');
-    const [selected, setSelected] = useState<string[]>([]);
+    const [selected] = useState<string[]>([]);
 
     const [update, setUpdate] = useState<boolean>(false);
     const [dataRows, setData] = useState<Data[]>([]); //rows
@@ -234,7 +234,7 @@ export default function EnhancedTable() {
 
     const getIndex = (value: string, data: Data[]): number => {
         let index: number = -1;
-        data.map((row, idx) => {
+        data.forEach((row, idx) => {
             if (row.id === value) {
                 index = idx;
             };
