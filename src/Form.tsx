@@ -49,7 +49,8 @@ export default function Form({ showForm, setShowForm }: IForm) {
     const [name, setName] = useState<string>('');
     const [taskPriority, setPriority] = useState<number>(1); //'Medium'
     const [checked, setChecked] = useState<boolean>(false);
-    const [validData, setValidData] = useState<boolean>(false);
+    const [validData, setValidData] = useState<boolean>(true);
+    const [fieldHelperText, setFieldHelperText] = useState<string>('');
 
     const priorityValues: {
         value: number;
@@ -70,6 +71,18 @@ export default function Form({ showForm, setShowForm }: IForm) {
         ];
 
     const handleTaskName = (event: React.ChangeEvent<HTMLInputElement>): void => {
+
+        var letters = /^[A-Za-z]+$/;
+
+        if (event.target.value.length < 3) {
+            setFieldHelperText("* Field should contains at least 3 characters");
+            setValidData(false);
+        } else if (!event.target.value.match(letters)) {
+            setFieldHelperText("* Field should contains only characters / letters");
+            setValidData(false);
+        } else {
+            setValidData(true);
+        }
         setName(event.target.value);
     }
 
@@ -84,8 +97,7 @@ export default function Form({ showForm, setShowForm }: IForm) {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
 
-        if (name === '') {
-            setValidData(!validData);
+        if (!validData) {
             return;
         }
 
@@ -107,14 +119,16 @@ export default function Form({ showForm, setShowForm }: IForm) {
     return (
         <div>
             <h2>Add a new Task</h2>
-            <form className={classes.root} noValidate onSubmit={handleSubmit} autoComplete="off">
+            <form className={classes.root} onSubmit={handleSubmit} autoComplete="off">
                 <TextField
                     id="standard-basic"
-                    error={validData}
+                    error={!validData}
                     onChange={handleTaskName}
                     value={name}
+                    type="text"
+                    required
                     label="Task Name"
-                    helperText={validData && "* Field cannot be empty"}
+                    helperText={!validData && fieldHelperText}
                 />
                 <br />
                 <TextField
